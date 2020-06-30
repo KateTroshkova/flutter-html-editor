@@ -33,6 +33,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   GlobalKey<HtmlEditorState> keyEditor = GlobalKey();
   String result = "";
+  bool showEditor = false;
 
   @override
   Widget build(BuildContext context) {
@@ -42,50 +43,25 @@ class _MyHomePageState extends State<MyHomePage> {
         elevation: 0,
       ),
       backgroundColor: Colors.white,
-      body: Padding(
-        padding: const EdgeInsets.all(20),
+      body: Center(
+        //padding: const EdgeInsets.all(20),
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              HtmlEditor(
+              showEditor ? HtmlEditor(
                 hint: "Your text here...",
                 //value: "text content initial, if any",
                 key: keyEditor,
-                height: 400,
+                height: 200,
+              ) :
+              TextField(
+                onTap: () {
+                  setState(() {
+                    showEditor = true;
+                  });
+                },
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    FlatButton(
-                      color: Colors.blueGrey,
-                      onPressed: (){
-                        setState(() {
-                          keyEditor.currentState.setEmpty();
-                        });
-                      },
-                      child: Text("Reset", style: TextStyle(color: Colors.white)),
-                    ),
-                    SizedBox(width: 16,),
-                    FlatButton(
-                      color: Colors.blue,
-                      onPressed: () async {
-                        final txt = await keyEditor.currentState.getText();
-                        setState(() {
-                          result = txt;
-                        });
-                      },
-                      child: Text("Submit", style: TextStyle(color: Colors.white),),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(result),
-              )
             ],
           ),
         ),
